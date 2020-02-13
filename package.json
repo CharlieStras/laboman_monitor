@@ -1,0 +1,41 @@
+{
+  "name": "laboman_monitor",
+  "version": "1.0.0",
+  "main": "./src/main.js",
+  "productName": "Laboman_Monitor",
+  "scripts": {
+    "start": "sirv public",
+    "rollup-build": "rollup -c",
+    "rollup-dev": "rollup -c -w",
+    "electron": "electron .",
+    "electron-dev": "NODE_ENV=development electron .",
+    "dev": "run-p rollup-dev electron-dev",
+    "rebuild-32": "electron-rebuild -f -w sqlanywhere --arch=ia32",
+    "rebuild-64": "electron-rebuild -f -w sqlanywhere --arch=x64",
+    "pure-package-win32": "electron-packager . --platform=win32 --arch=ia32 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\"config.json\" --ignore=\".prettierrc\" --extra-resource=\"config.json\"",
+    "pure-package-win64": "electron-packager . --platform=win32 --arch=x64 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\"config.json\" --ignore=\".prettierrc\" --extra-resource=\"config.json\"",
+    "package-win32": "run-s rollup-build rebuild-32 pure-package-win32",
+    "package-win64": "run-s rollup-build rebuild-64 pure-package-win64",
+    "package": "run-s package-win32 package-win64"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "chokidar": "^3.3.1",
+    "electron": "^4.2.12",
+    "electron-packager": "^14.2.1",
+    "electron-rebuild": "^1.10.0",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^1.20.0",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^5.1.2",
+    "sirv-cli": "^0.4.5",
+    "svelte": "^3.0.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "lowdb": "^1.0.0",
+    "sqlanywhere": "^1.0.24"
+  }
+}

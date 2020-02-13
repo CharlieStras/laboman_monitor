@@ -1,0 +1,43 @@
+version: 1.0.{build}
+
+skip_non_tags: true
+
+image: Visual Studio 2015
+
+cache:
+  - node_modules
+
+environment:
+  nodejs_version: "10"
+  my_secret:
+    secure: 0jaBWUeSSWKry0iyOFQg6g==
+  my_salt:
+    secure: /n6488EdFMJTFhzCZMJt578JV0u0syrSjaqG+jc3mbkSDsbD9lEFK/plqtrxu5tDEkv4xeG/RKgvPbb4yhNoTw==
+
+install:
+  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+  - cmd: appveyor-tools\secure-file -decrypt .\src\secret.js.enc -secret %my_secret% -salt %my_salt%
+  - sh: ./appveyor-tools/secure-file -decrypt ./src/secret.js.enc -secret $my_secret -salt $my_salt
+  - ps: Install-Product node $env:nodejs_version
+  - npm install
+
+build_script:
+  - npm run package
+
+test: off
+
+artifacts:
+  - path: dist\Laboman_Monitor-win32-ia32
+    name: Laboman_Monitor-win32
+  - path: dist\Laboman_Monitor-win32-x64
+    name: Laboman_Monitor-win64
+
+deploy:
+  release: lsa-v$(appveyor_build_version)
+  description: "Laboman Monitor"
+  provider: GitHub
+  auth_token:
+    secure: xXfIO2UEZQCgkjhJSQUFX5HQHY34H/z8pJeUHsByYHUJs2Ev5g3OTXrWvbtkrP8h
+  artifact: Laboman_Monitor-win32,Laboman_Monitor-win64
+  draft: true
+  force_update: true
