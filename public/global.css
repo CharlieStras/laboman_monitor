@@ -19,13 +19,7 @@ body {
   box-sizing: border-box;
   font-family: Tahoma, Arial, Helvetica, "Microsoft YaHei New",
     "Microsoft Yahei", "微软雅黑", 宋体, SimSun, STXihei, "华文细黑", sans-serif;
-  /* background: linear-gradient(135deg, #f2b705 0%, #f28705 100%); */
-  /* background: linear-gradient(135deg, #8c7354 0%, #bf9e75 100%); */
-  /* background: linear-gradient(135deg, #f2a7b5 0%, #d9a0a0 100%); */
-  /* background: #bfbfbf; */
-  /* background: linear-gradient(135deg, #bfada8 0%, #d9cccc 100%); */
-  /* background: linear-gradient(135deg, #a67244 0%, #402a17 100%); */
-  /* background: linear-gradient(135deg, #049dd9 0%, #040dbf 100%); */
+  background: linear-gradient(135deg, #049dd9 0%, #040dbf 100%);
 }
 
 a {
