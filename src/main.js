@@ -39,10 +39,9 @@ var mainWindow;
 
 const createWindow = () => {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600
-  });
+  mainWindow = new BrowserWindow({ backgroundColor: "#0565be" });
+
+  mainWindow.maximize();
 
   var watcher;
   if (process.env.NODE_ENV == "development") {
