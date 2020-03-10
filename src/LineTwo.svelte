@@ -9,60 +9,60 @@
   <div class="div1 combination">
     <div class="instrument">CRP</div>
     <div class="track">
-      <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+      <img src="../assets/img/CV.svg" alt="Left arrow" />
       <div class="number">11</div>
     </div>
   </div>
   <div class="div2 track">
-    <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+    <img src="../assets/img/CV.svg" alt="Left arrow" />
     <div class="number">10</div>
   </div>
   <div class="div3 combination">
     <div class="instrument">SP</div>
     <div class="track">
-      <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+      <img src="../assets/img/CV.svg" alt="Left arrow" />
       <div class="number">9</div>
     </div>
   </div>
   <div class="div4 combination">
     <XN
-      serialNumber="{$instrumentSerialNOs.lineTwo.unitSerial8}"
+      serialNO="{$instrumentSerialNOs.lineTwo.unitSerial8}"
       unitNO="2-8"
       {writeSerialNO}
     ></XN>
     <div class="track">
-      <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+      <img src="../assets/img/CV.svg" alt="Left arrow" />
       <div class="number">8</div>
     </div>
   </div>
   <div class="div5 combination">
     <XN
-      serialNumber="{$instrumentSerialNOs.lineTwo.unitSerial7}"
+      serialNO="{$instrumentSerialNOs.lineTwo.unitSerial7}"
       unitNO="2-7"
       {writeSerialNO}
     ></XN>
     <div class="track">
-      <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+      <img src="../assets/img/CV.svg" alt="Left arrow" />
       <div class="number">7</div>
     </div>
   </div>
   <div class="div6 combination">
     <XN
-      serialNumber="{$instrumentSerialNOs.lineTwo.unitSerial6}"
+      serialNO="{$instrumentSerialNOs.lineTwo.unitSerial6}"
       unitNO="2-6"
       {writeSerialNO}
     ></XN>
     <div class="track">
-      <img src="../assets/img/Left_Arrow.svg" alt="Left arrow" />
+      <img src="../assets/img/CV.svg" alt="Left arrow" />
       <div class="number">6</div>
     </div>
   </div>
   <div class="div7 track">
-    <img src="../assets/img/Curved_Left_Arrow.svg" alt="Curved left arrow" />
+    <img src="../assets/img/BufferLeft.svg" alt="Curved left arrow" />
     <div class="number">5</div>
   </div>
   <div class="div8 track">
-    <img src="../assets/img/Curved_Right_Arrow.svg" alt="Curved right arrow" />
+    <img src="../assets/img/BufferRight.svg" alt="Curved right arrow" />
     <div class="number">4</div>
   </div>
   <div class="div9 track">
@@ -70,11 +70,11 @@
     <div class="number">3</div>
   </div>
   <div class="div10 track">
-    <img src="../assets/img/BT.svg" alt="BT" />
+    <img src="../assets/img/Feeder.svg" alt="BT" />
     <div class="number">2</div>
   </div>
   <div class="div11 track">
-    <img src="../assets/img/CV.svg" alt="CV" />
+    <img src="../assets/img/Collection.svg" alt="CV" />
     <div class="number">1</div>
   </div>
 </div>

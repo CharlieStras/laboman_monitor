@@ -39,9 +39,7 @@ var mainWindow;
 
 const createWindow = () => {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ backgroundColor: "#0565be" });
-
-  mainWindow.maximize();
+  mainWindow = new BrowserWindow({ backgroundColor: "#0565be", show: false });
 
   var watcher;
   if (process.env.NODE_ENV == "development") {
@@ -56,6 +54,11 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
+
+  mainWindow.maximize();
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

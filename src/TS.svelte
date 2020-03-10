@@ -1,0 +1,22 @@
+<script>
+  export var analyzer;
+  export var unitNO;
+
+  const { name } = analyzer;
+  var containerWidth;
+
+  $: fontSize = containerWidth * 0.0865;
+</script>
+
+<div class="conveyor">
+  <div class="mark-container" bind:clientWidth="{containerWidth}">
+    <img src="../assets/img/{name}.svg" alt="{name}" />
+    <div class="unit-number" style="font-size: {fontSize}px;">{unitNO}</div>
+  </div>
+</div>
+
+<style>
+  .conveyor {
+    flex-grow: 1.5;
+  }
+</style>

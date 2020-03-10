@@ -1,13 +1,14 @@
 <script>
   const { remote } = require("electron");
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   import { muted } from "./store";
   const conn = remote.require("./main.js").conn;
 
-  export var serialNumber;
+  export var serialNO;
   export var unitNO;
-  export var writeSerialNO;
   var countIntervalID;
   var errorIntervalID;
   var sampleCount = 0;
@@ -25,9 +26,9 @@
   }
 
   function setSearch() {
-    if (serialNumber) {
-      countIntervalID = setInterval(searchSampleCount, 5000, serialNumber);
-      errorIntervalID = setInterval(searchErrorReport, 5000, serialNumber);
+    if (serialNO) {
+      countIntervalID = setInterval(searchSampleCount, 5000, serialNO);
+      errorIntervalID = setInterval(searchErrorReport, 5000, serialNO);
     }
   }
 
@@ -36,11 +37,11 @@
     clearInterval(errorIntervalID);
   }
 
-  function searchSampleCount(serialNumber) {
+  function searchSampleCount(serialNO) {
     var sampleDate = new Date().toLocaleDateString("zh-CN");
     conn.exec(
       "SELECT COUNT(*) AS sample_count FROM labmain_log WHERE sampleda = ? AND serialno = ?",
-      [sampleDate, serialNumber],
+      [sampleDate, serialNO],
       function handleSearchSampleCount(err, result) {
         if (err) {
           throw err;
@@ -51,12 +52,12 @@
     );
   }
 
-  function searchErrorReport(serialNumber) {
+  function searchErrorReport(serialNO) {
     var dateStart = new Date().toLocaleDateString("zh-CN");
     var dateEnd = `${dateStart} 23:59:59`;
     conn.exec(
       "SELECT COUNT(*) AS error_count FROM lab_error_report WHERE (report_datetime BETWEEN ? AND ?) AND instrument_serial_number = ?",
-      [dateStart, dateEnd, serialNumber],
+      [dateStart, dateEnd, serialNO],
       function handleSearchErrorReport(err, result) {
         if (err) {
           throw err;
@@ -85,7 +86,14 @@
   function handleInputChange(event) {
     clearSearch();
     setSearch();
-    writeSerialNO(unitNO, serialNumber);
+    writeSerialNO(unitNO, serialNO);
+  }
+
+  function changeSerialNO(event) {
+    dispatch("serialNOChanged", {
+      unitNO,
+      serialNO
+    });
   }
 
   function clearAlarm(event) {
@@ -93,7 +101,7 @@
     var dateEnd = `${dateStart} 23:59:59`;
     conn.exec(
       "DELETE FROM lab_error_report WHERE (report_datetime BETWEEN ? AND ?) AND instrument_serial_number = ?",
-      [dateStart, dateEnd, serialNumber],
+      [dateStart, dateEnd, serialNO],
       function handleDeleteErrorReport(err, result) {
         if (err) {
           conn.rollback(function(err) {
@@ -120,9 +128,9 @@
   <div class="second-part">
     <input
       type="text"
-      bind:value="{serialNumber}"
+      bind:value="{serialNO}"
       placeholder="机身号"
-      on:change="{handleInputChange}"
+      on:change="{changeSerialNO}"
     />
     {#if isDanger}
     <button on:click="{clearAlarm}">

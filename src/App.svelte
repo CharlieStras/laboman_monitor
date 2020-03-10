@@ -5,60 +5,62 @@
   import { onMount } from "svelte";
 
   import Toggle from "./Toggle.svelte";
-  import LineOne from "./LineOne.svelte";
-  import LineTwo from "./LineTwo.svelte";
-  import { instrumentSerialNOs } from "./store";
+  import System from "./System.svelte";
 
   const configPath = "./resources/config.json";
   const adapter = new FileSync(configPath);
   const config = low(adapter);
 
-  var title = "Laboman Monitor";
+  var windowTitle = "Laboman Monitor";
+  var systems = [];
 
   onMount(function readDB() {
-    if (fs.existsSync(configPath)) {
-      config.read();
-      var dbSerialNOs = config.get("instrumentSerialNOs").value();
-      if (dbSerialNOs) {
-        instrumentSerialNOs.set({ ...$instrumentSerialNOs, ...dbSerialNOs });
-      }
-
-      var configTitle = config.get("title").value();
-      if (configTitle) {
-        title = configTitle;
-      }
+    config.read();
+    const title = config.get("title").value();
+    if (title) {
+      windowTitle = title;
     }
+
+    systems = config
+      .get("systems")
+      .cloneDeep()
+      .value();
   });
 
-  function writeSerialNO(unitNO, serialNO) {
-    var lineNO = unitNO.slice(0, 1);
-    unitNO = unitNO.slice(2);
-
-    var key = `instrumentSerialNOs.line${
-      lineNO == 1 ? "One" : "Two"
-    }.unitSerial${unitNO}`;
-    config.set(key, serialNO).write();
+  function changeSerialNO(event) {
+    const { name, unitNO, serialNO, hasTS } = event.detail;
+    config
+      .get("systems")
+      .find({ name })
+      .get(`analyzers[${hasTS ? unitNO - 6 : unitNO - 4}]`)
+      .set("serialNO", serialNO)
+      .write();
   }
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>{windowTitle}</title>
 </svelte:head>
 
 <main>
   <Toggle></Toggle>
-  <LineOne {writeSerialNO}></LineOne>
-  <LineTwo {writeSerialNO}></LineTwo>
+  {#each systems as system}
+  <System
+    analyzers="{system.analyzers}"
+    hasTS="{system.hasTS}"
+    name="{system.name}"
+    on:serialNOChanged="{changeSerialNO}"
+  ></System>
+  {/each}
 </main>
 
 <style>
   main {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: space-evenly;
-    height: 100%;
-    padding: 0 5vw;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 4.5rem;
   }
 </style>

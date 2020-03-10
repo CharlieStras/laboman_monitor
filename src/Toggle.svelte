@@ -9,6 +9,12 @@
 </div>
 
 <style>
+  .toggle {
+    position: fixed;
+    top: 2vw;
+    right: 2vw;
+    z-index: 1;
+  }
   .tgl {
     display: none;
   }
