@@ -24,23 +24,22 @@
       : instrumentContainerWidth * 0.202;
 </script>
 
-<div class="analyzer" style="--analyzer-flex-grow: {flexGrow};">
-  {#if name == "XN"}
-  <XN {serialNO} {unitNO} on:serialNOChanged></XN>
-  {:else}
-  <div
-    class="instrument"
-    bind:clientWidth="{instrumentContainerWidth}"
-    style="font-size: {fontSize}px;"
-  >
-    {name}
-  </div>
-  {/if}
-  <CV analyzer="{{name: cvName}}" {unitNO}></CV>
-</div>
-
 <style>
   .analyzer {
     flex-grow: var(--analyzer-flex-grow);
   }
 </style>
+
+<div class="analyzer" style="--analyzer-flex-grow: {flexGrow};">
+  {#if name == 'XN'}
+    <XN {serialNO} {unitNO} on:serialNOChanged />
+  {:else}
+    <div
+      class="instrument"
+      bind:clientWidth={instrumentContainerWidth}
+      style="font-size: {fontSize}px;">
+      {name}
+    </div>
+  {/if}
+  <CV analyzer={{ name: cvName }} {unitNO} />
+</div>

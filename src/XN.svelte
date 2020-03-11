@@ -1,29 +1,29 @@
 <script>
   const { remote } = require("electron");
   import { onMount, createEventDispatcher } from "svelte";
-
   const dispatch = createEventDispatcher();
 
   import { muted } from "./store";
+
   const conn = remote.require("./main.js").conn;
 
   export var serialNO;
   export var unitNO;
   var countIntervalID;
   var errorIntervalID;
+  var containerWidth;
   var sampleCount = 0;
   var isDanger = false;
   var alarm = new Audio("../assets/audio/alarm.mp3");
   alarm.loop = true;
-  var containerWidth;
 
   $: alarm.muted = $muted;
-
   $: fontSize = containerWidth * 0.202;
 
   if (process.env.NODE_ENV != "development") {
     onMount(function startSearch() {
-      setTimeout(setSearch, 1000);
+      // setTimeout(setSearch, 1000);
+      setSearch();
       return clearSearch;
     });
   }
@@ -93,6 +93,9 @@
   }
 
   function changeSerialNO(event) {
+    if (!countIntervalID) {
+      setSearch();
+    }
     dispatch("serialNOChanged", {
       unitNO,
       serialNO
@@ -123,37 +126,6 @@
   }
 </script>
 
-<div
-  class="instrument"
-  class:danger="{isDanger}"
-  style="font-size: {fontSize}px;"
->
-  <div class="main-part" bind:clientWidth="{containerWidth}">
-    <div class="instrument-name">XN</div>
-    <div class="count">{sampleCount}</div>
-  </div>
-  <div class="second-part">
-    <input
-      type="text"
-      bind:value="{serialNO}"
-      placeholder="机身号"
-      on:change="{changeSerialNO}"
-    />
-    {#if isDanger}
-    <button on:click="{clearAlarm}">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
-        <path
-          d="M360.85,269.84c-6.3-11.64-10-21-10-34.16V216.15A101.67,101.67,0,0,0,262.37,115.4v-19a13,13,0,0,0-26,0v19.06a99.91,99.91,0,0,0-33.24,10.38A13,13,0,0,0,215,149a74.07,74.07,0,0,1,33.23-8.31h2.46c40.89.59,74.15,34.44,74.15,75.5v19.53c0,20.65,6.76,34.86,13.09,46.56a13,13,0,0,0,22.9-12.4Z"
-        />
-        <path
-          d="M412.83,394.42,105.58,87.17a13,13,0,0,0-18.41,18.41L156.56,175a100.32,100.32,0,0,0-8.76,41.17v19.53c0,17.35-6.3,28.36-14.27,42.3-7.85,13.74-16.76,29.31-21.26,53.33a39.07,39.07,0,0,0,38.39,46.28h59.88a39.06,39.06,0,0,0,78.12,0h59.63a38.67,38.67,0,0,0,9.68-1.21l36.45,36.45a13,13,0,0,0,18.41-18.41ZM249.6,390.61a13,13,0,0,1-13-13h26A13,13,0,0,1,249.6,390.61Zm-98.94-39.06a13,13,0,0,1-12.79-15.44c3.69-19.71,11.1-32.67,18.27-45.2,8.7-15.23,17.7-31,17.7-55.23V216.15a74.6,74.6,0,0,1,3-20.93L333.14,351.55Z"
-        />
-      </svg>
-    </button>
-    {/if}
-  </div>
-</div>
-
 <style>
   .instrument {
     overflow: hidden;
@@ -174,7 +146,7 @@
     will-change: transform;
   }
 
-  .second-part {
+  .secondary-part {
     position: absolute;
     display: flex;
     width: 100%;
@@ -265,11 +237,11 @@
     transform: translateY(-100%);
   }
 
-  .instrument:hover .second-part {
+  .instrument:hover .secondary-part {
     transform: none;
   }
 
-  .instrument.danger:hover .second-part {
+  .instrument.danger:hover .secondary-part {
     background: #f00;
   }
 
@@ -291,3 +263,82 @@
     box-shadow: 0.1vw 0.1vw 0.3vw #d90000, -0.1vw -0.1vw 0.3vw #ff0000;
   }
 </style>
+
+<div
+  class="instrument"
+  class:danger={isDanger}
+  style="font-size: {fontSize}px;">
+  <div class="main-part" bind:clientWidth={containerWidth}>
+    <div class="instrument-name">XN</div>
+    <div class="count">{sampleCount}</div>
+  </div>
+  <div class="second-part">
+    <input
+      type="text"
+      bind:value={serialNO}
+      placeholder="机身号"
+      on:change={changeSerialNO} />
+    {#if isDanger}
+      <button on:click={clearAlarm}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+          <path
+            d="M360.85,269.84c-6.3-11.64-10-21-10-34.16V216.15A101.67,101.67,0,0,0,262.37,115.4v-19a13,13,0,0,0-26,0v19.06a99.91,99.91,0,0,0-33.24,10.38A13,13,0,0,0,215,149a74.07,74.07,0,0,1,33.23-8.31h2.46c40.89.59,74.15,34.44,74.15,75.5v19.53c0,20.65,6.76,34.86,13.09,46.56a13,13,0,0,0,22.9-12.4Z" />
+          <path
+            d="M412.83,394.42,105.58,87.17a13,13,0,0,0-18.41,18.41L156.56,175a100.32,100.32,0,0,0-8.76,41.17v19.53c0,17.35-6.3,28.36-14.27,42.3-7.85,13.74-16.76,29.31-21.26,53.33a39.07,39.07,0,0,0,38.39,46.28h59.88a39.06,39.06,0,0,0,78.12,0h59.63a38.67,38.67,0,0,0,9.68-1.21l36.45,36.45a13,13,0,0,0,18.41-18.41ZM249.6,390.61a13,13,0,0,1-13-13h26A13,13,0,0,1,249.6,390.61Zm-98.94-39.06a13,13,0,0,1-12.79-15.44c3.69-19.71,11.1-32.67,18.27-45.2,8.7-15.23,17.7-31,17.7-55.23V216.15a74.6,74.6,0,0,1,3-20.93L333.14,351.55Z" />
+        </svg>
+      </button>
+    {/if}
+  </div>
+</div>
+<div
+  class="instrument"
+  class:danger={isDanger}
+  style="font-size: {fontSize}px;">
+  <div class="main-part" bind:clientWidth={containerWidth}>
+    <div class="instrument-name">XN</div>
+    <div class="count">{sampleCount}</div>
+  </div>
+  <div class="second-part">
+    <input
+      type="text"
+      bind:value={serialNO}
+      placeholder="机身号"
+      on:change={changeSerialNO} />
+    {#if isDanger}
+      <button on:click={clearAlarm}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+          <path
+            d="M360.85,269.84c-6.3-11.64-10-21-10-34.16V216.15A101.67,101.67,0,0,0,262.37,115.4v-19a13,13,0,0,0-26,0v19.06a99.91,99.91,0,0,0-33.24,10.38A13,13,0,0,0,215,149a74.07,74.07,0,0,1,33.23-8.31h2.46c40.89.59,74.15,34.44,74.15,75.5v19.53c0,20.65,6.76,34.86,13.09,46.56a13,13,0,0,0,22.9-12.4Z" />
+          <path
+            d="M412.83,394.42,105.58,87.17a13,13,0,0,0-18.41,18.41L156.56,175a100.32,100.32,0,0,0-8.76,41.17v19.53c0,17.35-6.3,28.36-14.27,42.3-7.85,13.74-16.76,29.31-21.26,53.33a39.07,39.07,0,0,0,38.39,46.28h59.88a39.06,39.06,0,0,0,78.12,0h59.63a38.67,38.67,0,0,0,9.68-1.21l36.45,36.45a13,13,0,0,0,18.41-18.41ZM249.6,390.61a13,13,0,0,1-13-13h26A13,13,0,0,1,249.6,390.61Zm-98.94-39.06a13,13,0,0,1-12.79-15.44c3.69-19.71,11.1-32.67,18.27-45.2,8.7-15.23,17.7-31,17.7-55.23V216.15a74.6,74.6,0,0,1,3-20.93L333.14,351.55Z" />
+        </svg>
+      </button>
+    {/if}
+  </div>
+</div>
+<div
+  class="instrument"
+  class:danger={isDanger}
+  style="font-size: {fontSize}px;">
+  <div class="main-part" bind:clientWidth={containerWidth}>
+    <div class="instrument-name">XN</div>
+    <div class="count">{sampleCount}</div>
+  </div>
+  <div class="secondary-part">
+    <input
+      type="text"
+      bind:value={serialNO}
+      placeholder="机身号"
+      on:change={changeSerialNO} />
+    {#if isDanger}
+      <button on:click={clearAlarm}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+          <path
+            d="M360.85,269.84c-6.3-11.64-10-21-10-34.16V216.15A101.67,101.67,0,0,0,262.37,115.4v-19a13,13,0,0,0-26,0v19.06a99.91,99.91,0,0,0-33.24,10.38A13,13,0,0,0,215,149a74.07,74.07,0,0,1,33.23-8.31h2.46c40.89.59,74.15,34.44,74.15,75.5v19.53c0,20.65,6.76,34.86,13.09,46.56a13,13,0,0,0,22.9-12.4Z" />
+          <path
+            d="M412.83,394.42,105.58,87.17a13,13,0,0,0-18.41,18.41L156.56,175a100.32,100.32,0,0,0-8.76,41.17v19.53c0,17.35-6.3,28.36-14.27,42.3-7.85,13.74-16.76,29.31-21.26,53.33a39.07,39.07,0,0,0,38.39,46.28h59.88a39.06,39.06,0,0,0,78.12,0h59.63a38.67,38.67,0,0,0,9.68-1.21l36.45,36.45a13,13,0,0,0,18.41-18.41ZM249.6,390.61a13,13,0,0,1-13-13h26A13,13,0,0,1,249.6,390.61Zm-98.94-39.06a13,13,0,0,1-12.79-15.44c3.69-19.71,11.1-32.67,18.27-45.2,8.7-15.23,17.7-31,17.7-55.23V216.15a74.6,74.6,0,0,1,3-20.93L333.14,351.55Z" />
+        </svg>
+      </button>
+    {/if}
+  </div>
+</div>

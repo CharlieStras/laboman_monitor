@@ -38,22 +38,6 @@
   }
 </script>
 
-<svelte:head>
-  <title>{windowTitle}</title>
-</svelte:head>
-
-<main>
-  <Toggle></Toggle>
-  {#each systems as system}
-  <System
-    analyzers="{system.analyzers}"
-    hasTS="{system.hasTS}"
-    name="{system.name}"
-    on:serialNOChanged="{changeSerialNO}"
-  ></System>
-  {/each}
-</main>
-
 <style>
   main {
     display: flex;
@@ -64,3 +48,18 @@
     padding: 4.5rem;
   }
 </style>
+
+<svelte:head>
+  <title>{windowTitle}</title>
+</svelte:head>
+
+<main>
+  <Toggle />
+  {#each systems as system}
+    <System
+      analyzers={system.analyzers}
+      hasTS={system.hasTS}
+      name={system.name}
+      on:serialNOChanged={changeSerialNO} />
+  {/each}
+</main>

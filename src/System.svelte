@@ -94,20 +94,6 @@
   }
 </script>
 
-<section
-  class="system"
-  style="--aspect-ratio: {widthUnit/2}; width: {widthUnit / $maxWidthUnit * 100}%;"
->
-  {#each analyzers as analyzer, index}
-  <svelte:component
-    this="{analyzer.component}"
-    {analyzer}
-    unitNO="{index+1}"
-    on:serialNOChanged="{addSystemName}"
-  ></svelte:component>
-  {/each}
-</section>
-
 <style>
   section {
     display: flex;
@@ -130,3 +116,15 @@
     padding-bottom: calc(100% / (var(--aspect-ratio)));
   }
 </style>
+
+<section
+  class="system"
+  style="--aspect-ratio: {widthUnit / 2}; width: {(widthUnit / $maxWidthUnit) * 100}%;">
+  {#each analyzers as analyzer, index}
+    <svelte:component
+      this={analyzer.component}
+      {analyzer}
+      unitNO={index + 1}
+      on:serialNOChanged={addSystemName} />
+  {/each}
+</section>

@@ -2,12 +2,6 @@
   import { muted } from "./store";
 </script>
 
-<div class="toggle">
-  <input class="tgl tgl-flip" id="cb5" type="checkbox" checked="{$muted}"
-  on:click={() => $muted = !$muted} />
-  <label class="tgl-btn" data-tg-off="警报" data-tg-on="静音" for="cb5"></label>
-</div>
-
 <style>
   .toggle {
     position: fixed;
@@ -102,3 +96,13 @@
     transform: rotateY(20deg);
   }
 </style>
+
+<div class="toggle">
+  <input
+    class="tgl tgl-flip"
+    id="cb5"
+    type="checkbox"
+    checked={$muted}
+    on:click={() => ($muted = !$muted)} />
+  <label class="tgl-btn" data-tg-off="警报" data-tg-on="静音" for="cb5" />
+</div>
