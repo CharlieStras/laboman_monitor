@@ -12,8 +12,8 @@
     "dev": "run-p rollup-dev electron-dev",
     "rebuild-32": "electron-rebuild -f -w sqlanywhere --arch=ia32",
     "rebuild-64": "electron-rebuild -f -w sqlanywhere --arch=x64",
-    "pure-package-win32": "electron-packager . --platform=win32 --arch=ia32 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\"config.json\" --ignore=\".prettierrc\" --extra-resource=\"config.json\"",
-    "pure-package-win64": "electron-packager . --platform=win32 --arch=x64 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\"config.json\" --ignore=\".prettierrc\" --extra-resource=\"config.json\"",
+    "pure-package-win32": "electron-packager . --platform=win32 --arch=ia32 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\".prettierrc\" --extra-resource=\"./resources/config.json\"",
+    "pure-package-win64": "electron-packager . --platform=win32 --arch=x64 --asar --executable-name=Laboman_Monitor --out=dist --overwrite --ignore=\".prettierrc\" --extra-resource=\"./resources/config.json\"",
     "package-win32": "run-s rollup-build rebuild-32 pure-package-win32",
     "package-win64": "run-s rollup-build rebuild-64 pure-package-win64",
     "package": "run-s package-win32 package-win64"
