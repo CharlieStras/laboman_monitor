@@ -15,8 +15,11 @@
   var isDanger = false;
   var alarm = new Audio("../assets/audio/alarm.mp3");
   alarm.loop = true;
+  var containerWidth;
 
   $: alarm.muted = $muted;
+
+  $: fontSize = containerWidth * 0.202;
 
   if (process.env.NODE_ENV != "development") {
     onMount(function startSearch() {
@@ -120,8 +123,12 @@
   }
 </script>
 
-<div class="instrument" class:danger="{isDanger}">
-  <div class="main-part">
+<div
+  class="instrument"
+  class:danger="{isDanger}"
+  style="font-size: {fontSize}px;"
+>
+  <div class="main-part" bind:clientWidth="{containerWidth}">
     <div class="instrument-name">XN</div>
     <div class="count">{sampleCount}</div>
   </div>
@@ -150,7 +157,7 @@
 <style>
   .instrument {
     overflow: hidden;
-    background: linear-gradient(145deg, #37a437, #2e8a2e);
+    background: linear-gradient(145deg, #37a437, var(--main-color));
     color: #fff;
   }
 
@@ -161,9 +168,8 @@
     left: 0;
     top: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     transition: transform 0.2s ease-in-out;
     will-change: transform;
   }
@@ -184,11 +190,13 @@
   }
 
   .count {
-    margin-top: 0.6vw;
-    margin-bottom: 0.5vw;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 7.78%;
     border: 1px dashed #ffffff;
     border-radius: 3px;
-    padding: 0.1vw 0.7vw;
+    padding: 1.59% 11.12%;
   }
 
   input {
@@ -201,7 +209,6 @@
     box-shadow: inset 0.2vw 0.2vw 0.6vw #277527,
       inset -0.2vw -0.2vw 0.6vw #359f35;
     width: 90%;
-    font-size: 1.3vw;
     padding: 0.2vw 0;
     text-align: center;
   }
@@ -216,11 +223,10 @@
   }
 
   button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.2vw;
-    margin-top: 0.2vw;
+    width: 41.4%;
+    height: 41.4%;
+    padding: 3.11%;
+    margin-top: 3.11%;
     cursor: pointer;
     border-radius: 100%;
     border: 0;
@@ -233,9 +239,26 @@
   }
 
   svg {
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 100%;
+    height: 100%;
     fill: #fff;
+  }
+
+  .instrument.danger {
+    color: #fff;
+    animation: blinkRed 0.5s infinite;
+  }
+
+  @keyframes blinkRed {
+    from {
+      background: #f00;
+    }
+    50% {
+      background: #a00;
+    }
+    to {
+      background: #f00;
+    }
   }
 
   .instrument:hover .main-part {
@@ -266,22 +289,5 @@
 
   .instrument.danger button:active {
     box-shadow: 0.1vw 0.1vw 0.3vw #d90000, -0.1vw -0.1vw 0.3vw #ff0000;
-  }
-
-  .instrument.danger {
-    color: #fff;
-    animation: blinkRed 0.5s infinite;
-  }
-
-  @keyframes blinkRed {
-    from {
-      background: #f00;
-    }
-    50% {
-      background: #a00;
-    }
-    to {
-      background: #f00;
-    }
   }
 </style>
