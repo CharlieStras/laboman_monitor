@@ -90,7 +90,6 @@ out/
 
 # DB params
 src/secret.js
-resources/
 
 # svelte
 /public/build/
