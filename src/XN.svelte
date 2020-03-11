@@ -46,16 +46,16 @@
   }
 
   function handleSearchSampleCount(error, result) {
-    if (err) {
-      throw err;
+    if (error) {
+      throw error;
     }
 
     sampleCount = result[0].sample_count;
   }
 
   function handleSearchErrorReport(error, result) {
-    if (err) {
-      throw err;
+    if (error) {
+      throw error;
     }
 
     isDanger = result[0].error_count > 0 ? true : false;
