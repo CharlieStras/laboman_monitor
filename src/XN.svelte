@@ -9,8 +9,7 @@
 
   export var serialNO;
   export var unitNO;
-  var countIntervalID;
-  var errorIntervalID;
+  var intervalID;
   var containerWidth;
   var sampleCount = 0;
   var isDanger = false;
@@ -21,81 +20,53 @@
   $: fontSize = containerWidth * 0.202;
 
   if (process.env.NODE_ENV != "development") {
-    onMount(function startSearch() {
-      // setTimeout(setSearch, 1000);
-      setSearch();
-      return clearSearch;
+    onMount(() => {
+      intervalID = setInterval(searchCountAndError, 5000);
+      return () => clearInterval(intervalID);
     });
   }
 
-  function setSearch() {
+  function searchCountAndError() {
     if (serialNO) {
-      countIntervalID = setInterval(searchSampleCount, 5000, serialNO);
-      errorIntervalID = setInterval(searchErrorReport, 5000, serialNO);
+      const dateStart = new Date().toLocaleDateString("zh-CN");
+      const dateEnd = `${dateStart} 23:59:59`;
+
+      conn.exec(
+        "SELECT COUNT(*) AS sample_count FROM labmain_log WHERE sampleda = ? AND serialno = ?",
+        [dateStart, serialNO],
+        handleSearchSampleCount
+      );
+
+      conn.exec(
+        "SELECT COUNT(*) AS error_count FROM lab_error_report WHERE (report_datetime BETWEEN ? AND ?) AND instrument_serial_number = ?",
+        [dateStart, dateEnd, serialNO],
+        handleSearchErrorReport
+      );
     }
   }
 
-  function clearSearch() {
-    clearInterval(countIntervalID);
-    clearInterval(errorIntervalID);
+  function handleSearchSampleCount(error, result) {
+    if (err) {
+      throw err;
+    }
+
+    sampleCount = result[0].sample_count;
   }
 
-  function searchSampleCount(serialNO) {
-    var sampleDate = new Date().toLocaleDateString("zh-CN");
-    conn.exec(
-      "SELECT COUNT(*) AS sample_count FROM labmain_log WHERE sampleda = ? AND serialno = ?",
-      [sampleDate, serialNO],
-      function handleSearchSampleCount(err, result) {
-        if (err) {
-          throw err;
-        } else {
-          sampleCount = result[0].sample_count;
-        }
-      }
-    );
+  function handleSearchErrorReport(error, result) {
+    if (err) {
+      throw err;
+    }
+
+    isDanger = result[0].error_count > 0 ? true : false;
+    refreshState();
   }
 
-  function searchErrorReport(serialNO) {
-    var dateStart = new Date().toLocaleDateString("zh-CN");
-    var dateEnd = `${dateStart} 23:59:59`;
-    conn.exec(
-      "SELECT COUNT(*) AS error_count FROM lab_error_report WHERE (report_datetime BETWEEN ? AND ?) AND instrument_serial_number = ?",
-      [dateStart, dateEnd, serialNO],
-      function handleSearchErrorReport(err, result) {
-        if (err) {
-          throw err;
-        } else {
-          var errorCount = result[0].error_count;
-          if (errorCount > 0) {
-            sendNotification();
-            isDanger = true;
-          } else {
-            clearNotification();
-            isDanger = false;
-          }
-        }
-      }
-    );
-  }
-
-  function sendNotification() {
-    alarm.play();
-  }
-
-  function clearNotification() {
-    alarm.pause();
-  }
-
-  function handleInputChange(event) {
-    clearSearch();
-    setSearch();
-    writeSerialNO(unitNO, serialNO);
+  function refreshState() {
+    isDanger ? alarm.play() : alarm.pause();
   }
 
   function changeSerialNO(event) {
-    if (!countIntervalID) {
-      setSearch();
-    }
     dispatch("serialNOChanged", {
       unitNO,
       serialNO
@@ -105,24 +76,33 @@
   function clearAlarm(event) {
     var dateStart = new Date().toLocaleDateString("zh-CN");
     var dateEnd = `${dateStart} 23:59:59`;
+
     conn.exec(
       "DELETE FROM lab_error_report WHERE (report_datetime BETWEEN ? AND ?) AND instrument_serial_number = ?",
       [dateStart, dateEnd, serialNO],
-      function handleDeleteErrorReport(err, result) {
-        if (err) {
-          conn.rollback(function(err) {
-            if (err) throw err;
-          });
-          throw err;
-        } else {
-          conn.commit(function(err) {
-            if (err) throw err;
-          });
-          clearNotification();
-          isDanger = false;
-        }
-      }
+      handleDeleteErrorReport
     );
+  }
+
+  function handleDeleteErrorReport(error, result) {
+    if (error) {
+      conn.rollback(error => {
+        if (error) {
+          throw error;
+        }
+      });
+
+      throw error;
+    } else {
+      conn.commit(function(error) {
+        if (error) {
+          throw error;
+        }
+      });
+
+      isDanger = false;
+      refreshState();
+    }
   }
 </script>
 
