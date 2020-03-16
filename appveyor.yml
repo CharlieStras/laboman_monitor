@@ -19,7 +19,7 @@ install:
   - cmd: appveyor-tools\secure-file -decrypt .\src\secret.js.enc -secret %my_secret% -salt %my_salt%
   - sh: ./appveyor-tools/secure-file -decrypt ./src/secret.js.enc -secret $my_secret -salt $my_salt
   - ps: Install-Product node $env:nodejs_version
-  - npm ci
+  - npm install
 
 build_script:
   - npm run package

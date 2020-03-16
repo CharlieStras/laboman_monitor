@@ -54,6 +54,7 @@
           case "Feeder":
           case "BufferRight":
           case "BufferLeft":
+          case "BarcodeTerminal":
             analyzer.component = ST;
             widthUnit += 0.75;
             break;

@@ -1,90 +1,26 @@
 {
-  "title": "测试",
+  "title": "Laboman Monitor",
+  "dbPath": "c:/laboman/database/laboman.db",
   "systems": [
     {
       "name": "流水线#1",
-      "hasTS": true,
+      "hasTS": false,
       "analyzers": [
         {
           "name": "XN",
-          "serialNO": "12333"
+          "serialNO": ""
         },
         {
           "name": "XN",
-          "serialNO": "12322"
+          "serialNO": ""
         },
         {
           "name": "XN",
-          "serialNO": "12311"
+          "serialNO": ""
         },
         {
-          "name": "SP"
-        },
-        {
-          "name": "DI"
-        },
-        {
-          "name": "A1c"
-        },
-        {
-          "name": "CRP"
-        }
-      ]
-    },
-    {
-      "name": "流水线#2",
-      "hasTS": true,
-      "analyzers": [
-        {
-          "name": "XN",
-          "serialNO": "44444"
-        },
-        {
-          "name": "XN",
-          "serialNO": "55555"
-        },
-        {
-          "name": "XN",
-          "serialNO": "66666"
-        },
-        {
-          "name": "SP"
-        },
-        {
-          "name": "DI"
-        },
-        {
-          "name": "CRP"
-        }
-      ]
-    },
-    {
-      "name": "流水线#3",
-      "hasTS": true,
-      "analyzers": [
-        {
-          "name": "XN",
-          "serialNO": "12333"
-        },
-        {
-          "name": "XN",
-          "serialNO": "12322"
-        },
-        {
-          "name": "XN",
-          "serialNO": "12311"
-        },
-        {
-          "name": "SP"
-        },
-        {
-          "name": "DI"
-        },
-        {
-          "name": "A1c"
-        },
-        {
-          "name": "CRP"
+          "name": "SP",
+          "serialNO": ""
         }
       ]
     }

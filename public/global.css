@@ -26,112 +26,8 @@ body {
   background: linear-gradient(135deg, #13a4dd 0%, #0565be 100%);
 }
 
-a {
-  color: rgb(0, 100, 200);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a:visited {
-  color: rgb(0, 80, 160);
-}
-
-label {
-  display: block;
-}
-
-input,
-button,
-select,
-textarea {
-  font-family: inherit;
+input {
   font-size: inherit;
-  padding: 0.4em;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-}
-
-input:disabled {
-  color: #ccc;
-}
-
-input[type="range"] {
-  height: 0;
-}
-
-button {
-  color: #333;
-  background-color: #f4f4f4;
-  outline: none;
-}
-
-button:disabled {
-  color: #999;
-}
-
-button:not(:disabled):active {
-  background-color: #ddd;
-}
-
-button:focus {
-  border-color: #666;
-}
-
-.parent > div {
-  border: 1px solid #999;
-  border-radius: 5px;
-}
-
-.parent > .combination {
-  background: #ffffff;
-}
-
-.parent .instrument,
-.parent .track {
-  display: flex;
-  align-items: center;
-}
-
-.parent .instrument,
-.parent .combination .track {
-  width: calc(100% - 0.5vw);
-  height: calc(50% - 0.375vw);
-  border: 1px solid #999;
-  border-radius: 5px;
-  margin: 0.25vw;
-}
-
-.parent .instrument {
-  position: relative;
-  justify-content: center;
-  font-size: 1.3vw;
-}
-
-.parent .track {
-  flex-direction: column;
-  justify-content: flex-end;
-  color: #2e8a2e;
-  background: #fff;
-}
-
-.parent .number {
-  margin-bottom: 0.5vw;
-  border: 1px solid #2e8a2e;
-  border-radius: 3px;
-  padding: 0.1vw 0.7vw;
-  font-size: 0.9vw;
-}
-
-.parent .combination .number {
-  margin-bottom: 0.25vw;
-}
-
-.parent img {
-  width: 4.5vw;
 }
 
 .system > div {
@@ -244,14 +140,16 @@ button:focus {
 img[alt="BufferLeft"],
 img[alt="Feeder"],
 img[alt="Collection"],
-img[alt="BufferRight"] {
+img[alt="BufferRight"],
+img[alt="BarcodeTerminal"] {
   width: 84.72%;
 }
 
 img[alt="BufferLeft"] + .unit-number,
 img[alt="Feeder"] + .unit-number,
 img[alt="Collection"] + .unit-number,
-img[alt="BufferRight"] + .unit-number {
+img[alt="BufferRight"] + .unit-number,
+img[alt="BarcodeTerminal"] + .unit-number {
   margin-bottom: 9.62%;
   padding: 1.92% 13.46%;
 }

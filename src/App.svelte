@@ -53,8 +53,8 @@
   <title>{windowTitle}</title>
 </svelte:head>
 
+<Toggle />
 <main>
-  <Toggle />
   {#each systems as system}
     <System
       analyzers={system.analyzers}
