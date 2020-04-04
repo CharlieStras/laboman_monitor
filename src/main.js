@@ -13,8 +13,11 @@ var conn_params = require("./secret");
 
 if (fs.existsSync(configPath)) {
   config.read();
-  var dbPath = config.get("dbPath").value();
-  if (dbPath) {
+  const host = config.get("host").value();
+  const dbPath = config.get("dbPath").value();
+  if (host) {
+    conn_params.Host = host;
+  } else if (dbPath) {
     conn_params.DatabaseFile = dbPath;
   }
 }
@@ -61,7 +64,7 @@ const createWindow = () => {
   });
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
