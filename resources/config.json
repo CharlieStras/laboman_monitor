@@ -4,7 +4,7 @@
   "systems": [
     {
       "name": "流水线#1",
-      "hasTS": false,
+      "hasTS": true,
       "analyzers": [
         {
           "name": "XN",
@@ -19,8 +19,43 @@
           "serialNO": ""
         },
         {
-          "name": "SP",
+          "name": "SP"
+        },
+        {
+          "name": "DI"
+        },
+        {
+          "name": "A1c"
+        },
+        {
+          "name": "CRP"
+        }
+      ]
+    },
+    {
+      "name": "流水线#1",
+      "hasTS": true,
+      "analyzers": [
+        {
+          "name": "XN",
           "serialNO": ""
+        },
+        {
+          "name": "XN",
+          "serialNO": ""
+        },
+        {
+          "name": "XN",
+          "serialNO": ""
+        },
+        {
+          "name": "SP"
+        },
+        {
+          "name": "DI"
+        },
+        {
+          "name": "CRP"
         }
       ]
     }

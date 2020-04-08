@@ -44,8 +44,22 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-    min-height: 100vh;
+    height: 100vh;
     padding: 4.5rem;
+    padding-top: 220px;
+  }
+
+  header {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }
+
+  header h1 {
+    text-align: center;
+    color: #f2c45a;
+    font-size: 4rem;
   }
 </style>
 
@@ -55,6 +69,9 @@
 
 <Toggle />
 <main>
+  <header>
+    <h1>天津医科大学肿瘤医院血球流水线</h1>
+  </header>
   {#each systems as system}
     <System
       analyzers={system.analyzers}

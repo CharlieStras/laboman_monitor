@@ -17,15 +17,18 @@ if (fs.existsSync(configPath)) {
   const dbPath = config.get("dbPath").value();
   if (host) {
     conn_params.Host = host;
+    delete conn_params.DatabaseFile;
+    delete conn_params.AutoStart;
   } else if (dbPath) {
     conn_params.DatabaseFile = dbPath;
+    delete conn_params.Host;
   }
 }
 
 const conn = sqlanywhere.createConnection();
 
 if (conn_params && process.env.NODE_ENV != "development") {
-  conn.connect(conn_params, function(err) {
+  conn.connect(conn_params, function (err) {
     if (err) console.error(err);
   });
 }
@@ -57,6 +60,8 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
+
+  mainWindow.webContents.session.clearCache(function () {});
 
   mainWindow.maximize();
   mainWindow.once("ready-to-show", () => {
