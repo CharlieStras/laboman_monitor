@@ -70,7 +70,7 @@
 <Toggle />
 <main>
   <header>
-    <h1>天津医科大学肿瘤医院血球流水线</h1>
+    <h1>{windowTitle}</h1>
   </header>
   {#each systems as system}
     <System
